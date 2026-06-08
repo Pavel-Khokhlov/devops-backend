@@ -36,6 +36,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug outputs
+        run: echo "image_sha=${{ needs.build.outputs.image_sha }}"  # ← покажет пустое или нет
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
