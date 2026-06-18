@@ -16,7 +16,7 @@ jobs:
             experimental: true
         exclude:
           - os: ubuntu-latest
-          - node-version: 22
+            node-version: 22
 
       fail-fast: false
     continue-on-error: ${{ matrix.experimental == true }}
