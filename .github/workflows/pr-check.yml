@@ -15,8 +15,11 @@ jobs:
         exclude:
           - os: windows-latest
             node-version: 23
+        include:
+          - node-version: 24
+            experimental: true
       fail-fast: false
-
+    continue-on-error: ${{ matrix.experimental == true }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
