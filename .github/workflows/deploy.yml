@@ -5,12 +5,12 @@ on:
     branches: [main]
  
 jobs:
-  #checks:
-  #  uses: ./.github/workflows/pr-check.yml
+  checks:
+    uses: ./.github/workflows/pr-check.yml
 
 
   build:
-    #needs: [checks]
+    needs: [checks]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,23 +24,29 @@ jobs:
           docker build -t $IMAGE_SHA -t $IMAGE_LATEST .
           docker push $IMAGE_SHA
           docker push $IMAGE_LATEST
-  #deploy:
-  #  needs: checks
-  #  runs-on: ubuntu-latest
- #
-  #  steps:
-  #    - name: Deploy via SSH
-  #      uses: appleboy/ssh-action@v1.0.3
-  #      with:
-  #        host: ${{ secrets.SSH_HOST }}
-  #        username: ${{ secrets.SSH_USER }}
-  #        key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #        script: |
-  #          cd /var/www/myapp/backend
-  #          git pull origin main
-  #          cd /var/www/myapp
-  #          docker compose up --build -d backend
+          echo "image_sha=$IMAGE_SHA" >> $GITHUB_OUTPUT
+  deploy:
+    needs: checks
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/myapp
+
+            # Set new DOCKER_BACKEND_IMAGE inside .env 
+            sed -i "s|DOCKER_BACKEND_IMAGE=.*|DOCKER_BACKEND_IMAGE=${{ needs.build.outputs.image_sha }}|" .env
+ 
+            # Restart only backend, without frontend и db
+            docker compose up -d --no-deps backend
+            
   
-  #notify:
-  #  needs: [checks, deploy]
-  #  uses: ./.github/workflows/notify.yml
+  notify:
+    needs: [checks, build, deploy]
+    if: always()
+    uses: ./.github/workflows/notify.yml

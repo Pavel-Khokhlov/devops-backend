@@ -6,19 +6,21 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-    if: always()
     steps:
       - name: Notify Telegram
         run: |
           CHECKS="${{ needs.checks.result }}"
+          BUILD="${{ needs.build.result }}"
           DEPLOY="${{ needs.deploy.result }}"
     
           if [ "$CHECKS" != "success" ]; then
             TEXT="❌ Test Failure%0A${{ github.repository }} @ ${{ github.  ref_name }}%0AGoto: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          elif [ "$BUILD" != "success" ]; then
+            TEXT="❌ Build Failure%0A${{ github.repository }} @ ${{ github.  ref_name }}%0AGoto: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           elif [ "$DEPLOY" != "success" ]; then
             TEXT="❌ Deploy Failure%0A${{ github.repository }} @ ${{ github.  ref_name }}%0AGoto: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else
-            TEXT="✅ Successful Deployment%0A${{ github.repository }} @ ${{github.    ref_name }}"
+            TEXT="✅ Successful Deployment%0A${{ github.repository }} @ ${{github.ref_name }}"
           fi
     
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
