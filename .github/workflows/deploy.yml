@@ -12,11 +12,14 @@ jobs:
   build:
     needs: [checks]
     runs-on: ubuntu-latest
+    outputs:
+      image_sha: ${{ steps.build-push.outputs.image_sha }}
     steps:
       - uses: actions/checkout@v4
       - name: Enter to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
       - name: Build and Push image
+        id: build-push
         env:
           IMAGE_SHA: ${{ secrets.DOCKER_USER }}/backend:sha-${{ github.sha }}
           IMAGE_LATEST: ${{ secrets.DOCKER_USER }}/backend:latest
@@ -26,7 +29,7 @@ jobs:
           docker push $IMAGE_LATEST
           echo "image_sha=$IMAGE_SHA" >> $GITHUB_OUTPUT
   deploy:
-    needs: checks
+    needs: [checks, build]
     runs-on: ubuntu-latest
  
     steps:
