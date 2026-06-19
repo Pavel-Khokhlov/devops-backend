@@ -17,12 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Enter to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
+        run: docker login -u ${{ vars.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
       - name: Build and Push image
         id: build-push
         env:
-          IMAGE_SHA: ${{ secrets.DOCKER_USER }}/backend:sha-${{ github.sha }}
-          IMAGE_LATEST: ${{ secrets.DOCKER_USER }}/backend:latest
+          IMAGE_SHA: ${{ vars.DOCKER_USER }}/backend:sha-${{ github.sha }}
+          IMAGE_LATEST: ${{ vars.DOCKER_USER }}/backend:latest
         run: |
           docker build -t $IMAGE_SHA -t $IMAGE_LATEST .
           docker push $IMAGE_SHA
@@ -53,3 +53,7 @@ jobs:
     needs: [checks, build, deploy]
     if: always()
     uses: ./.github/workflows/notify.yml
+    secrets:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
