@@ -47,5 +47,6 @@ jobs:
             
   
   notify:
-    needs: [checks, deploy]
+    needs: [checks, build, deploy]
+    if: always()
     uses: ./.github/workflows/notify.yml
