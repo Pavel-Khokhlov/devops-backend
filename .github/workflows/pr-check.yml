@@ -30,11 +30,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - name: Установка зависимостей
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Линтинг
+      - name: Linting
         run: npm run lint
 
-      - name: Запуск тестов
+      - name: Starting tests
         run: npm run test
