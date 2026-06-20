@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/myapp
+            cd /var/www/practice
 
             # Set new DOCKER_BACKEND_IMAGE inside .env 
             sed -i "s|DOCKER_BACKEND_IMAGE=.*|DOCKER_BACKEND_IMAGE=${{ needs.build.outputs.image_sha }}|" .env
