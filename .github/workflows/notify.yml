@@ -28,6 +28,10 @@ jobs:
           CHECKS="${{ inputs.checks_result }}"
           BUILD="${{ inputs.build_result }}"
           DEPLOY="${{ inputs.deploy_result }}"
+
+          echo "CHECKS: $CHECKS"
+          echo "BUILD: $BUILD"
+          echo "DEPLOY: $DEPLOY"
     
           if [ "$CHECKS" != "success" ]; then
             TEXT="❌ Test Failure%0A${{ github.repository }} @ ${{ github.  ref_name }}%0AGoto: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
