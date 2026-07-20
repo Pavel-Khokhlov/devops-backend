@@ -16,7 +16,8 @@ spec:
         - name: dockerhub-cred
       containers:
         - name: backend
-          image: pavelkh09/backend:sha-731ae26bd91c9836caba5ea23a76dbdd7c73d61d
+          # image: pavelkh09/backend:sha-731ae26bd91c9836caba5ea23a76dbdd7c73d61d
+          image: ${IMAGE}
           ports:
             - containerPort: 3000
           envFrom:
