@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Configure kubectl
         run: |
           mkdir -p ~/.kube
@@ -46,6 +46,7 @@ jobs:
           IMAGE: ${{ needs.build.outputs.image_sha }}
         run: |
           envsubst < manifests/backend.yaml | kubectl apply -f -
+          kubectl annotate deployment/backend kubernetes.io/change-cause="sha-${{ github.sha }}" --overwrite
           kubectl rollout status deployment/backend --timeout=120s
  
   notify:
