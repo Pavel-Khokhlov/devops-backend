@@ -47,7 +47,7 @@ jobs:
         run: |
           envsubst < manifests/backend.yaml | kubectl apply -f -
           kubectl annotate deployment/backend kubernetes.io/change-cause="sha-${{ github.sha }}" --overwrite
-          kubectl rollout status deployment/backend --timeout=120s
+          kubectl rollout status deployment/backend --timeout=300s
  
   notify:
     name: Notify JOB
