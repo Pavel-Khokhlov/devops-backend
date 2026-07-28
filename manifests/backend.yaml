@@ -18,6 +18,13 @@ spec:
         - name: backend
           # image: pavelkh09/backend:sha-731ae26bd91c9836caba5ea23a76dbdd7c73d61d
           image: ${IMAGE}
+          resources:
+            requests:
+              cpu: "60m"
+              memory: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "120Mi"
           ports:
             - containerPort: 3000
           envFrom:
