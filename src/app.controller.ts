@@ -9,4 +9,14 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+  @Get('app/health')
+  health() {
+    return { status: 'ok', timestamp: new Date().toISOString() };
+  }
+
+  @Get('app/ready')
+  ready() {
+    // Здесь можно проверить подключение к БД
+    return { status: 'ready' };
+  }
 }
