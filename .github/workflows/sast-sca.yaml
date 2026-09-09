@@ -50,6 +50,11 @@ jobs:
             --exclude=dist \
             --exclude=build \
             --exclude=kubernetes \
+            --exclude=deployment \
+            --exclude=manifests \
+            --exclude=helm \
+            --exclude=argocd \
+            --exclude=workflows \
             .
   trivy:
     runs-on: ubuntu-latest
