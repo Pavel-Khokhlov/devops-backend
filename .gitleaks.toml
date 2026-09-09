@@ -11,7 +11,7 @@ tags = ["token", "myapp"]
  
 [allowlist]
 paths = [
-  '''.gitleaks.toml''',
+  '''\.gitleaks\.toml''',
   '''tests/fixtures/''',
-  '''README.md''',
+  '''README\.md''',
 ]
