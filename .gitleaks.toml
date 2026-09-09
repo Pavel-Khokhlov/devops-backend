@@ -10,8 +10,10 @@ regex = '''MYAPP_TOKEN_[A-Z0-9]{32}'''
 tags = ["token", "myapp"]
  
 [allowlist]
-paths = [
-  '''\.gitleaks\.toml''',
-  '''tests/fixtures/''',
+files = [
   '''README\.md''',
+  '''\.gitleaks\.toml''',
+]
+paths = [
+  '''tests/fixtures/''',
 ]
