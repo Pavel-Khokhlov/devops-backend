@@ -1,10 +1,21 @@
-node_modules/
-deployment/
+# Полные папки (слеш в конце важен!)
 manifests/
+deployment/
+k8s/
 helm/
 argocd/
 workflows/
-k8s/
-dist/
-build/
 kubernetes/
+
+# Или более точно с ** для любых вложенных папок
+**/manifests/
+**/deployment/
+**/k8s/
+**/helm/
+**/argocd/
+**/workflows/
+**/kubernetes/
+
+# Также исключить конкретные файлы
+**/postgres.yaml
+**/deployment.yaml
