@@ -3,11 +3,18 @@ title = "gitleaks config"
 [extend]
 useDefault = true
  
+[[rules]]
+id = "custom-internal-token"
+description = "Internal API token"
+regex = '''MYAPP_TOKEN_[A-Z0-9]{32}'''
+tags = ["token", "myapp"]
+ 
 [allowlist]
 files = [
-  '''README\.md''',
-  '''\.gitleaks\.toml''',
+  '''README\.md$''',           # точное совпадение имени файла
+  '''\.gitleaks\.toml$''',
+  '''tests/fixtures/''',
 ]
 paths = [
-  '''tests/fixtures/''',
+  '''README\.md$''',           # также добавляем в paths
 ]
