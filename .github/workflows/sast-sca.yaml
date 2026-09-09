@@ -47,15 +47,15 @@ jobs:
             --config=p/jwt \
             --error \
             --exclude node_modules \
-            --exclude dist \
-            --exclude build \
-            --exclude kubernetes \
             --exclude deployment \
             --exclude manifests \
             --exclude helm \
             --exclude argocd \
             --exclude workflows \
             --exclude k8s \
+            --exclude dist \
+            --exclude build \
+            --exclude kubernetes \
             .
   trivy:
     runs-on: ubuntu-latest
