@@ -1,7 +1,8 @@
 name: Deploy k8s
  
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
  
 jobs:
   checks:
@@ -31,29 +32,17 @@ jobs:
  
   deploy:
     needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4 
- 
-      - name: Configure kubectl
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-        run: |
-          mkdir -p ~/.kube
-          echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config  
- 
-      - name: Install Helm
-        uses: azure/setup-helm@v4 
- 
-      - name: Deploy with Helm
-        env:
-          IMAGE_TAG: ${{ needs.build.outputs.image_sha }}
-        run: |
-          helm upgrade backend-api ./helm/backend-api \
-            --reuse-values \
-            --set image.tag="$IMAGE_TAG" \
-            --wait \
-            --timeout 4m
+    uses: ./.github/workflows/deploy-argocd-final.yml
+    with:
+      helm_path: HelmCharts/backend-api/values-production.yaml
+      image_name: ${{ needs.build.outputs.image_sha }}
+      branch: main
+      gitops_repo: Pavel-Khokhlov/argocd_devops.git
+      argocd_app_name: backend-api
+      argocd_server: ${{ vars.ARGOCD_SERVER }}
+    secrets:
+      gitops_token: ${{ secrets.GITOPS_TOKEN }}
+      argocd_auth_token: ${{ secrets.ARGOCD_AUTH_TOKEN }}
  
   notify:
     name: Notify JOB
