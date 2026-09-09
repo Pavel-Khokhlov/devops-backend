@@ -11,10 +11,10 @@ tags = ["token", "myapp"]
  
 [allowlist]
 files = [
-  '''README\.md$''',           # точное совпадение имени файла
-  '''\.gitleaks\.toml$''',
+  '''README\.md''',           # точное совпадение имени файла
+  '''\.gitleaks\.toml''',
   '''tests/fixtures/''',
 ]
 paths = [
-  '''README\.md$''',           # также добавляем в paths
+  '''README\.md''',           # также добавляем в paths
 ]
