@@ -63,10 +63,30 @@ jobs:
           cd gitops-repo
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
+              
           BRANCH_NAME="update-image-${{ github.run_id }}"
+              
+          # Проверяем и удаляем локальную ветку, если существует
+          if git show-ref --verify --quiet refs/heads/"$BRANCH_NAME"; then
+            echo "Локальная ветка $BRANCH_NAME существует, удаляем..."
+            git branch -D "$BRANCH_NAME"
+          fi
+              
+          # Проверяем и удаляем удалённую ветку, если существует
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME";         then
+            echo "Удалённая ветка $BRANCH_NAME существует, удаляем..."
+            git push origin --delete "$BRANCH_NAME"
+          fi
+              
+          # Создаём новую ветку
+          echo "Создаём новую ветку $BRANCH_NAME"
           git checkout -b "$BRANCH_NAME"
+              
+          # Добавляем файлы и коммитим
           git add "${{ inputs.helm_path }}"
-          git commit -m "feat(${{ inputs.argocd_app_name }}): update image to ${{ inputs.image_name }}"
+          git commit -m "feat(${{ inputs.argocd_app_name }}): update image to ${{          inputs.image_name }}"
+              
+          # Пушим новую ветку
           git push origin "$BRANCH_NAME"
  
       - name: Create and merge Pull Request
