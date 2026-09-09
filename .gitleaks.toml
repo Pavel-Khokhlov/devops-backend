@@ -3,12 +3,6 @@ title = "gitleaks config"
 [extend]
 useDefault = true
  
-[[rules]]
-id = "custom-internal-token"
-description = "Internal API token"
-regex = '''MYAPP_TOKEN_[A-Z0-9]{32}'''
-tags = ["token", "myapp"]
- 
 [allowlist]
 files = [
   '''README\.md''',
