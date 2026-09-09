@@ -122,9 +122,6 @@ jobs:
           curl -sSL -o /usr/local/bin/argocd \
             https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
           chmod +x /usr/local/bin/argocd
-      
-          echo "Login to ArgoCD"
-          argocd login "$ARGOCD_SERVER" --token "$ARGOCD_AUTH_TOKEN" --insecure  --grpc-web
           
           echo "Sync applications"
           argocd app sync ${{ inputs.argocd_app_name }} --insecure
