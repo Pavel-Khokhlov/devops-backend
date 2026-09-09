@@ -6,6 +6,9 @@ on:
     branches: [main]
 
 jobs:
+  security-scan:
+    name: "Security scan"
+    uses: ./.github/workflows/sast-sca.yaml
   test:
     runs-on: ubuntu-latest
     strategy:
