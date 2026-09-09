@@ -1,0 +1,10 @@
+node_modules/
+deployment/
+manifests/
+helm/
+argocd/
+workflows/
+k8s/
+dist/
+build/
+kubernetes/
